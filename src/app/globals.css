@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0b1220;
+  --ink-elevated: #121a2b;
+  --fog: #c8d0e0;
+  --mist: #8b95a8;
+  --copper: #e8a45a;
+  --amber: #f0c27a;
+  --mint: #7dceb8;
+  --cream: #f4efe6;
+  --background: var(--ink);
+  --foreground: var(--cream);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ink: var(--ink);
+  --color-ink-elevated: var(--ink-elevated);
+  --color-fog: var(--fog);
+  --color-mist: var(--mist);
+  --color-copper: var(--copper);
+  --color-amber: var(--amber);
+  --color-mint: var(--mint);
+  --color-cream: var(--cream);
+  --font-sans: var(--font-plus-jakarta);
+  --font-display: var(--font-syne);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-plus-jakarta), system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--copper) 45%, transparent);
+  color: var(--cream);
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ambient-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate(3%, -2%) scale(1.06);
+    opacity: 0.75;
+  }
+}
+
+@keyframes section-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-rise {
+  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-hero-rise-delay-1 {
+  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+.animate-hero-rise-delay-2 {
+  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.24s both;
+}
+
+.animate-hero-rise-delay-3 {
+  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.36s both;
+}
+
+.animate-ambient {
+  animation: ambient-drift 14s ease-in-out infinite;
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-rise,
+  .animate-hero-rise-delay-1,
+  .animate-hero-rise-delay-2,
+  .animate-hero-rise-delay-3,
+  .animate-ambient {
+    animation: none;
+  }
+
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
