@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { AppImage as Image } from "@/components/AppImage";
 
 export function Hero() {
   return (
