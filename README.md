@@ -18,6 +18,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Live demo (GitHub Pages)
+
+https://thebhaveshsharma.github.io/fymie/
+
+Pushes to `master` deploy a static export via GitHub Actions.
+
 ## MVP (local demo)
 
 No backend required. Auth and data live in the browser (`localStorage`).

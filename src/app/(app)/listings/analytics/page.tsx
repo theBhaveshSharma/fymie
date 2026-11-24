@@ -1,17 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
-import { useParams } from "next/navigation";
+import { Suspense, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { FeatureGate } from "@/components/app/FeatureGate";
 import { useAuth } from "@/context/AuthContext";
 import { FEATURES } from "@/lib/features";
 import { getEventById, getOrganizerEventStats } from "@/lib/storage";
 
-export default function ListingAnalyticsPage() {
-  const params = useParams<{ id: string }>();
+function ListingAnalyticsInner() {
+  const searchParams = useSearchParams();
+  const eventId = searchParams.get("id") ?? "";
   const { user } = useAuth();
-  const event = useMemo(() => getEventById(params.id), [params.id]);
+  const event = useMemo(() => getEventById(eventId), [eventId]);
   const stats = useMemo(
     () => (event ? getOrganizerEventStats(event.id) : null),
     [event],
@@ -25,7 +26,7 @@ export default function ListingAnalyticsPage() {
     return (
       <main className="mx-auto max-w-3xl px-6 py-16">
         <p className="text-mist">Listing not found.</p>
-        <Link href="/listings" className="mt-4 inline-block text-cream underline">
+        <Link href="/listings/" className="mt-4 inline-block text-cream underline">
           Back to listings
         </Link>
       </main>
@@ -37,7 +38,7 @@ export default function ListingAnalyticsPage() {
     return (
       <main className="mx-auto max-w-3xl px-6 py-16">
         <p className="text-mist">Only the listing owner can view analytics.</p>
-        <Link href="/listings" className="mt-4 inline-block text-cream underline">
+        <Link href="/listings/" className="mt-4 inline-block text-cream underline">
           Back to listings
         </Link>
       </main>
@@ -46,7 +47,7 @@ export default function ListingAnalyticsPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-10">
-      <Link href="/listings" className="text-sm text-mist hover:text-cream">
+      <Link href="/listings/" className="text-sm text-mist hover:text-cream">
         Back to listings
       </Link>
       <h1 className="mt-4 font-[family-name:var(--font-syne)] text-3xl font-bold text-cream">
@@ -84,7 +85,7 @@ export default function ListingAnalyticsPage() {
             <li key={joiner.id} className="border-b border-white/5 pb-4">
               <p className="font-medium text-cream">
                 {joiner.name}
-                {joiner.idVerified ? (
+                {FEATURES.idVerification && joiner.idVerified ? (
                   <span className="ml-2 text-xs text-mint">ID verified</span>
                 ) : null}
                 {joiner.phoneVerified ? (
@@ -103,5 +104,19 @@ export default function ListingAnalyticsPage() {
         </ul>
       </section>
     </main>
+  );
+}
+
+export default function ListingAnalyticsPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="mx-auto max-w-3xl px-6 py-16">
+          <p className="text-mist">Loading analytics...</p>
+        </main>
+      }
+    >
+      <ListingAnalyticsInner />
+    </Suspense>
   );
 }

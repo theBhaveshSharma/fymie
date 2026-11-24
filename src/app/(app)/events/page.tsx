@@ -38,7 +38,7 @@ function EventRow({
 }) {
   return (
     <Link
-      href={`/events/${event.id}`}
+      href={`/events/detail/?id=${encodeURIComponent(event.id)}`}
       className="group grid gap-4 border-b border-white/5 py-5 transition-colors hover:bg-white/[0.02] sm:grid-cols-[200px_1fr] sm:gap-6"
     >
       <div className="relative aspect-[16/10] overflow-hidden sm:aspect-[4/3]">

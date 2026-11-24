@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import {
   CalendarDays,
   Clock3,
@@ -43,11 +43,12 @@ function formatDateRange(start: string, end?: string) {
   return `${formatDate(start)} to ${formatDate(end)}`;
 }
 
-export default function EventDetailPage() {
-  const params = useParams<{ id: string }>();
+function EventDetailInner() {
+  const searchParams = useSearchParams();
+  const eventId = searchParams.get("id") ?? "";
   const router = useRouter();
   const { user, toggleJoinEvent, refresh } = useAuth();
-  const event = useMemo(() => getEventById(params.id), [params.id]);
+  const event = useMemo(() => getEventById(eventId), [eventId]);
   const [meetupAck, setMeetupAck] = useState(false);
   const [joinError, setJoinError] = useState("");
   const [tick, setTick] = useState(0);
@@ -112,7 +113,7 @@ export default function EventDetailPage() {
   function handleChat(otherId: string) {
     if (!event || !user) return;
     const thread = getOrCreateThread(event.id, user.id, otherId);
-    router.push(`/chat/${thread.id}`);
+    router.push(`/chat/?id=${encodeURIComponent(thread.id)}`);
   }
 
   function handleOpenGroupChat() {
@@ -129,7 +130,7 @@ export default function EventDetailPage() {
       `${event.title} crew`,
       participants,
     );
-    router.push(`/chat/${thread.id}`);
+    router.push(`/chat/?id=${encodeURIComponent(thread.id)}`);
   }
 
   function handleStartLiveShare() {
@@ -578,5 +579,19 @@ export default function EventDetailPage() {
         </aside>
       </div>
     </main>
+  );
+}
+
+export default function EventDetailPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="mx-auto max-w-3xl px-6 py-16">
+          <p className="text-mist">Loading event...</p>
+        </main>
+      }
+    >
+      <EventDetailInner />
+    </Suspense>
   );
 }

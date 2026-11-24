@@ -82,7 +82,7 @@ export default function MatchesPage() {
                           user.id,
                           match.user.id,
                         );
-                        router.push(`/chat/${thread.id}`);
+                        router.push(`/chat/?id=${encodeURIComponent(thread.id)}`);
                       }}
                       className="rounded-lg bg-mint/20 px-3 py-2 text-sm font-medium text-mint"
                     >
@@ -91,7 +91,7 @@ export default function MatchesPage() {
                   ))
                 ) : match.sharedEventIds.length > 0 ? (
                   <Link
-                    href={`/events/${match.sharedEventIds[0]}`}
+                    href={`/events/detail/?id=${encodeURIComponent(match.sharedEventIds[0])}`}
                     className="rounded-lg border border-white/15 px-3 py-2 text-sm text-cream"
                   >
                     Open event to send interest

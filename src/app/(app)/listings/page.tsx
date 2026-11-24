@@ -94,7 +94,7 @@ export default function ListingsPage() {
                   className="grid gap-4 border-b border-white/5 py-5 sm:grid-cols-[180px_1fr_auto] sm:items-center"
                 >
                   <Link
-                    href={`/events/${event.id}`}
+                    href={`/events/detail/?id=${encodeURIComponent(event.id)}`}
                     className="relative aspect-[16/10] overflow-hidden sm:aspect-[4/3]"
                   >
                     <Image
@@ -107,7 +107,7 @@ export default function ListingsPage() {
                   </Link>
                   <div>
                     <Link
-                      href={`/events/${event.id}`}
+                      href={`/events/detail/?id=${encodeURIComponent(event.id)}`}
                       className="font-[family-name:var(--font-syne)] text-xl font-bold text-cream hover:underline"
                     >
                       {event.title}
@@ -129,7 +129,7 @@ export default function ListingsPage() {
                   <div className="flex flex-col items-start gap-2 sm:items-end">
                     {FEATURES.organizerAnalytics ? (
                       <Link
-                        href={`/listings/${event.id}/analytics`}
+                        href={`/listings/analytics/?id=${encodeURIComponent(event.id)}`}
                         className="text-sm text-cream underline-offset-4 hover:underline"
                       >
                         Analytics

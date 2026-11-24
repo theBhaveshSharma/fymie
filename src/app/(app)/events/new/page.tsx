@@ -137,7 +137,7 @@ export default function CreateEventPage() {
       contactEmail: contactEmail.trim() || user.email,
     });
 
-    router.push(`/events/${created.id}`);
+    router.push(`/events/detail/?id=${encodeURIComponent(created.id)}`);
   }
 
   return (
